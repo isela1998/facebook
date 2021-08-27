@@ -10,25 +10,25 @@ def convertToDecimalFormat(n):
 def get_dollar():
     data = []
     try:
-        dolar1 = 1000000
+        dolar1 = Dolar.objects.using('default').get(pk=1)
         dl1 = float(dolar1.dolar)
     except:
         new_dolar1 = Dolar()
         new_dolar1.dolar = '1000000'
         new_dolar1.save()
 
-        dolar1 = 1000000
+        dolar1 = Dolar.objects.using('default').get(pk=1)
         dl1 = float(dolar1.dolar)
 
     try:
-        dolar2 = 1000000
+        dolar2 = Dolar.objects.using('default').get(pk=2)
         dl2 = float(dolar2.dolar)
     except:
         new_dolar2 = Dolar()
         new_dolar2.dolar = '1200000'
         new_dolar2.save()
 
-        dolar1 = 1000000
+        dolar1 = Dolar.objects.using('default').get(pk=1)
         dl1 = float(dolar1.dolar)
     
     data = {
