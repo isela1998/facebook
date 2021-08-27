@@ -1,0 +1,226 @@
+{% extends 'list.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block head_list %}
+<link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+<script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+
+<script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+<script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+<link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+<link href="{% static 'lib/bootstrap-4.5.2-dist/css/bootstrap-table.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/bootstrap-4.5.2-dist/js/bootstrap-table.min.js' %}"></script>
+<script src="{% static 'lib/bootstrap-4.5.2-dist/js/bootstrap-table-auto-refresh.min.js' %}"></script>
+
+<script src="{% static 'invoices/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+<tr>
+    <th scope="col" style="width: 15%;">Fecha</th>
+    <th scope="col" style="width: 30%;">Proveedor</th>
+    <th scope="col" style="width: 30%;">Facilitador</th>
+    <th scope="col" style="width: 10%;">Total</th>
+    <th scope="col" style="width: 15%;">Opciones</th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{% block buttons_list %}
+<a class="btn btn-primary btn-flat btnTest btnAddInvoice">
+    <i class="fas fa-plus"></i><i class="fa fa-file-invoice-dollar"></i> Nuevo registro</a>
+<a class="btn btn-primary btn-flat btnTest btnAddProvider">
+    <i class="fas fa-plus"></i><i class="fa fa-user-tie"></i> Nuevo Proveedor</a>
+<a class="btn btn-primary btn-flat btnTest btnAddFacilitator">
+    <i class="fas fa-plus"></i><i class="fa fa-user-tie"></i> Nuevo Facilitador</a>
+{% endblock %}
+
+{% block javascript %}
+<!-- Modal -->
+<div class="modal fade" id="modalInvoices" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" action="." enctype="multipart/form-data" class="formInvoices">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <b><i class="fas text-primary fa-plus"></i><i class="fas text-primary fa-file-invoice-dollar"></i> <span>REGISTRO DE FACTURA</span></b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <input name="action" type="hidden" value="add-invoice">
+                        <input name="buttons" type="hidden" value="0">
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-20">
+                                <label for="id_datejoined">{{ form.datejoined.label }}</label>
+                                {{ form.datejoined }}
+                            </div>
+                            <div class="form-group wd-40">
+                                <label for="id_provider">{{ form.provider.label }}</label>
+                                {{ form.provider }}
+                            </div>
+                            <div class="form-group wd-30">
+                                <label for="id_facilitator">{{ form.facilitator.label }}</label>
+                                {{ form.facilitator }}
+                            </div>
+                            <div class="form-group wd-10">
+                                <label for="totalInvoice">Factura</label>
+                                <input class="form-control inputNumber" value="0,00" id="totalInvoice"
+                                    name="totalInvoice" type="text" disabled>
+                            </div>
+                        </div>
+                        <table class="table" id="tableInvoice" data-show-refresh="true" data-auto-refresh="true">
+                            <thead>
+                                <tr>
+                                    <th style="width: 7%;" class="text-center" scope="col">Código</th>
+                                    <th style="width: 13%" class="text-center" scope="col">Categoría</th>
+                                    <th style="width: 24%" class="text-center" scope="col">Producto</th>
+                                    <th style="width: 12%" class="text-center" scope="col">Tipo</th>
+                                    <th style="width: 7%;" class="text-center" scope="col">Total</th>
+                                    <th style="width: 2%;" class="text-center" scope="col">Cant.</th>
+                                    <th style="width: 7%;" class="text-center" scope="col">P.U.</th>
+                                    <th style="width: 8%;" class="text-center" scope="col">%|Envío</th>
+                                    <th style="width: 8%;" class="text-center" scope="col">%|G.</th>
+                                    <th style="width: 8%;" class="text-center" scope="col">Precio</th>
+                                    <th style="width: 4%;" class="text-center" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="new-group0"></tr>
+                            </tbody>
+                        </table>
+                        <label for="aditionalExpenses">Gastos|Adicionales</label>
+                        <div class="d-flex flex-row flex-wrap">
+                            <div class="form-group wd-20">
+                                <input class="form-control selectThis inputNumber" id="aditionalExpenses"
+                                    name="aditionalExpenses" type="text" value="0.00" autocomplete="off"
+                                    placeholder="Gastos adicionales" required>
+                            </div>
+                            <div class="wd-5"></div>
+                            <div class="form-group wd-25">
+                                <button type="button" class="btn btn-info"
+                                    id="add-categories">Nueva categoría</button>
+                            </div>
+                            <div class="form-group wd-25">
+                                <button type="button" class="btn btn-info"
+                                    id="add-product-types">Nuevo tipo de producto</button>
+                            </div>
+                            <div class="form-group wd-25">
+                                <button type="button" class="btn btn-info"
+                                    id="add-group-buttons">Agregar campo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btn_submit" class="btn btn-primary btn-flat btn-block"><i
+                            class="fas fa-save"></i>
+                        Registrar Factura</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Modal Providers -->
+<div class="modal fade" id="modalProviders" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" action="." enctype="multipart/form-data" class="formProviders">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <b><i class="fas text-primary fa-plus"></i><i class="fas text-primary fa-user-tie"></i>
+                            <span>REGISTRO DE PROVEEDOR</span></b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <input name="action" type="hidden" value="add-provider">
+                        <div class="form-group">
+                            <label for="id_names">{{ formProviders.names.label }}:</label>
+                            {{ formProviders.names }}
+                        </div>
+                        <label for="id_ci">{{ formProviders.ci.label }}:</label>
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-10">
+                                {{ formProviders.identity }}
+                            </div>
+                            <div class="form-group wd-90">
+                                {{ formProviders.ci }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_contact">{{ formProviders.contact.label }}:</label>
+                            {{ formProviders.contact }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_address">{{ formProviders.address.label }}:</label>
+                            {{ formProviders.address }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-save"></i>
+                        Registrar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Modal Facilitator -->
+<div class="modal fade" id="modalFacilitator" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" action="." enctype="multipart/form-data" class="formFacilitator">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <b><i class="fas text-primary fa-plus"></i><i class="fas text-primary fa-user-tie"></i>
+                            <span>REGISTRO DE FACILITADOR</span></b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <input name="action" type="hidden" value="add-facilitador">
+                        <div class="form-group">
+                            <label for="id_names">{{ formFacilitator.names.label }}:</label>
+                            {{ formFacilitator.names }}
+                        </div>
+                        <label for="id_ci">{{ formFacilitator.ci.label }}:</label>
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-10">
+                                {{ formFacilitator.identity }}
+                            </div>
+                            <div class="form-group wd-90">
+                                {{ formFacilitator.ci }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_contact">{{ formFacilitator.contact.label }}:</label>
+                            {{ formFacilitator.contact }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-save"></i>
+                        Registrar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

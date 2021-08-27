@@ -1,0 +1,138 @@
+{% load static %} {% load humanize %}
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+    .img-invoice {
+        width: 120px;
+        padding: 10px;
+    }
+
+    @page {
+        size: letter landscape;
+        margin: 1cm;
+    }
+
+    .img-lirax {
+        width: 320px;
+    }
+    
+    #invoice thead tr th {
+        text-align: left;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+        padding-top: 4px;
+    }
+    
+    #invoice thead tr {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    #invoice tbody tr {
+        padding: 0;
+    }
+    
+    .text-center {
+        text-align: center;
+    }
+</style>
+<body>
+    <table id="tb">
+        <thead>
+            <tr>
+                <th style="width: 15%; text-align: left;"><img src="..{{ icon }}" class="img-invoice"></th>
+                <th style="width: 60%; text-align: left;">
+                    <div>
+                        <span style="font-size: 18px;">{{ comp.name|upper }}</span><br>
+                        <span style="font-size: 14px; font-weight: 300;"><b>R.I.F.:</b> {{ comp.rif }}</span><br>
+                        <span style="font-size: 14px; font-weight: 300;"><b>Domicilio Fiscal</b>:
+                            {{ comp.address }}</span><br><br>
+                        <span style="font-size: 14px; font-weight: 600;"><b>Zona Postal: </b> </span>
+                        <span style="font-size: 14px; font-weight: 300;"> {{ comp.postal_zone }} </span>
+                        <span style="font-size: 14px; font-weight: 600;"><b>Teléfono:</b> </span>
+                        <span style="font-size: 14px; font-weight: 300;"> {{ comp.phone }} </span><br>
+                        <span style="font-size: 14px; font-weight: 600;"> Correo: </span>
+                        <span style="font-size: 14px; font-weight: 300;">
+                            {{ comp.email }}</span><br>
+                    </div>
+                </th>
+                <th style="width: 25%; text-align: left;"><img src="..{{ lirax }}" class="img-lirax"></th>
+            </tr>
+        </thead>
+    </table><br>
+    <span style="font-size: 14px; font-weight: 600; text-align: center;">NOTA DE COMPRA</span>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 60%; font-size: 12px; text-align: left; border-style: double; border: gray; padding: 5px;">
+                    <span style="font-size: 14px;">PROVEEDOR</span><br>
+                    <span style="font-size: 14px; font-weight: 300;">{{ sale.provider.names|upper }} {{ sale.provider.identity.identity|upper }}-{{ sale.provider.ci|upper }} {{ sale.provider.address|upper }} ({{ sale.provider.contact|upper }} )</span><br><br>
+                    <span style="font-size: 14px;">FACILITADOR</span><br>
+                    <span style="font-size: 14px; font-weight: 300;">{{ sale.facilitator.names|upper }} {{ sale.facilitator.identity.identity|upper }}-{{ sale.facilitator.ci|upper }} ({{ sale.provider.contact|upper }} )</span><br>
+                </th>
+                <th style="width: 40%; font-size: 12px; text-align: left; border-style: double; border: gray; padding: 5px;">
+                    <span style="font-size: 16px;">COMPRA Nº: </span>
+                    <span style="font-size: 16px;">{{ comp.order }}</span> <br>
+                    <span style="font-size: 15px; font-weight: 300;">Fecha: </span> <span style="font-size: 15px; font-weight: 300;"> {{ comp.datejoined }}</span><br>
+                </th>
+            </tr>
+        </thead>
+    </table><br>
+    <table id="invoice">
+        <thead>
+            <tr>
+                <th style="width: 8%; font-size: 14px;">CÓD.</th>
+                <th style="width: 12%; font-size: 14px;">CATEG.</th>
+                <th style="width: 35%; font-size: 14px;">PRODUCTO</th>
+                <th style="width: 10%; font-size: 14px; text-align: center;">TOTAL</th>
+                <th style="width: 5%; font-size: 14px; text-align: center;">CANT</th>
+                <th style="width: 8%; font-size: 14px; text-align: center;">P.U.</th>
+                <th style="width: 8%; font-size: 14px; text-align: center;">%|Envío</th>
+                <th style="width: 8%; font-size: 14px; text-align: center;">%|G.</th>
+                <th style="width: 6%; font-size: 14px; text-align: center;">P.F.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in sale.detinvoices_set.all %}
+            <tr {% if forloop.first %}style="padding-top: 3px;" {% endif %}>
+                <td style="font-size: 13px;">{{ d.code }}</td>
+                <td style="font-size: 13px;">{{ d.category }}</td>
+                <td style="font-size: 13px;">{{ d.product }} ({{ d.type_product }}) </td>
+                <td style="font-size: 13px; text-align: center;">{{ d.total|intcomma }}</td>
+                <td style="font-size: 13px; text-align: center;">{{ d.quantity }}</td>
+                <td style="font-size: 13px; text-align: center;">{{ d.unit_price|intcomma }}</td>
+                <td style="font-size: 13px; text-align: center;">{{ d.shipment|intcomma }}</td>
+                <td style="font-size: 13px; text-align: center;">{{ d.gain|intcomma }}</td>
+                <td style="font-size: 13px; text-align: center;">{{ d.final_price|intcomma }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table style="margin-top: 200%;">
+        <thead>
+            <tr>
+                <th style="width: 50%; font-size: 12px; text-align: left; border-style: double; border: gray; padding: 5px;">
+                    <span style="font-size: 14px;">Observaciones: <br></span><br>
+                    <pre style='display:inline'>&#09;</pre>
+                    <span style="font-size: 14px; text-align: center;"> {{ sale.description }} </span>
+                    <br></span>
+                </th>
+                <th style="width: 50%; font-size: 12px; text-align: left; border-style: double; border: gray; padding: 5px;">
+                    <span style="font-size: 14px;">TOTALES: <br></span><br>
+                    <pre style='display:inline'>&#09;</pre>
+                    <span style="font-size: 14px; text-align: center;"> Sub-Total: </span>
+                    <span style="font-size: 14px; text-align: center; font-weight: 300;">{{ sale.subtotal|floatformat:"0"|intcomma }},00<br></span>
+                    <pre style='display:inline'>&#09;</pre>
+                    <span style="font-size: 14px; text-align: center;"> Gastos: </span>
+                    <!-- <span style="font-size: 14px; text-align: center; font-weight: 300;">{{ sale.iva|floatformat:"0"|intcomma }},00 Bs. <br></span> -->
+                    <span style="font-size: 14px; text-align: center; font-weight: 300;">{{ sale.expenses|floatformat:"0"|intcomma }},00<br></span>
+                    <pre style='display:inline'>&#09;</pre>
+                    <span style="font-size: 14px; text-align: center;"> TOTAL: </span>
+                    <span style="font-size: 14px; text-align: center; font-weight: 300;">{{ sale.total|floatformat:"0"|intcomma }},00 <br></span>
+                </th>
+            </tr>
+        </thead>
+    </table><br><br>
+
+</html>

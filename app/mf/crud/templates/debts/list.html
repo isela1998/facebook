@@ -1,0 +1,256 @@
+{% extends 'list.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block head_list %}
+<link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+<script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+
+<script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+<script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+<link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+<script src="{% static 'debts/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+<tr>
+    <th scope="col" style="width: 5%;">Tipo</th>
+    <th scope="col" style="width: 10%;">Fecha</th>
+    <th scope="col" style="width: 10%;">Límite</th>
+    <th scope="col" style="width: 25%;">Cliente/Empresa</th>
+    <th scope="col" style="width: 15%;">Descripción</th>
+    <th scope="col" style="width: 5%;">Total|$</th>
+    <th scope="col" style="width: 10%;">Tasa|Bs.</th>
+    <th scope="col" style="width: 10%;">Total|Bs.</th>
+    <th scope="col" style="width: 10%;">Opciones</th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{% block buttons_list %}
+<a class="btn btn-primary btn-flat btnTest btnAdd">
+    <i class="fas fa-plus"></i><i class="fas fa-file-alt"></i> Nueva Cuenta</a>
+<a class="btn btn-primary btn-flat btnTest btnAddProvider">
+    <i class="fas fa-plus"></i><i class="fas fa-user-tie"></i>  Nuevo Proveedor</a>
+<a class="btn btn-primary btn-flat btnTest btnAddClient">
+    <i class="fas fa-plus"></i><i class="fas fa-user"></i>  Nuevo Cliente</a>
+{% endblock %}
+
+{% block javascript %}
+<!-- Modal -->
+<div class="modal fade" id="modalDebts" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" action="." enctype="multipart/form-data" class="formDebts">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <b><i id="i_modal_title" class="fas fa-plus"></i><i class="fas text-primary fa-file-alt"></i> <span id="id_span"></span></b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <input name="action" type="hidden" value="add">
+                        <input name="id" id="id" type="hidden" value="0">
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-30">
+                                <label>{{ form.type_debts.label }}</label>
+                                {{ form.type_debts }}
+                            </div>
+                            <div class="form-group wd-70 text-right">
+                                <label>{{ form.client.label }}:</label>
+                                <input name="client" id="client" type="hidden" value="">
+                                <select name="searchClient" id="searchClient" class="form-control select2"
+                                    style="width: 100%;">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-50">
+                                <label>{{ form.start_date.label }}</label>
+                                {{ form.start_date }}
+                            </div>
+                            <div class="form-group wd-50">
+                                <label>{{ form.end_date.label }}</label>
+                                {{ form.end_date }}
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-50">
+                                <label>{{ form.rate.label }}</label>
+                                {{ form.rate }}
+                            </div>
+                            <div class="form-group wd-50">
+                                <label>{{ form.dollars.label }}</label>
+                                {{ form.dollars }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ form.description.label }}</label>
+                            {{ form.description }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btn_submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Modal Client -->
+<div class="modal fade" id="modalClient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" action="." enctype="multipart/form-data" class="formClient">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <b><i class="fas text-primary fa-plus"></i><i class="fas text-primary fa-user-friends"></i> <span>NUEVO CLIENTE</span></b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <input name="action" type="hidden" value="add">
+                        <input name="id" id="id" type="hidden" value="0">
+                        <div class="form-group">
+                            <label for="id_names">{{ formClient.names.label }}:</label>
+                            {{ formClient.names }}
+                        </div>
+                        <label for="id_ci">{{ formClient.ci.label }}:</label>
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-10">
+                                {{ formClient.identity }}
+                            </div>
+                            <div class="form-group wd-90">
+                                {{ formClient.ci }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_contact">{{ formClient.contact.label }}:</label>
+                            {{ formClient.contact }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_address">{{ formClient.address.label }}:</label>
+                            {{ formClient.address }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary medium btn-flat btn-block"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Modal Providers -->
+<div class="modal fade" id="modalProviders" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" action="." enctype="multipart/form-data" class="formProviders">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <b><i class="fas text-primary fa-plus"></i><i class="fas text-primary fa-user-tie"></i> <span>Nuevo Proveedor</span></b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <input name="action" type="hidden" value="add">
+                        <input name="id" id="id" type="hidden" value="0">
+                        <div class="form-group">
+                            <label for="id_names">{{ formProviders.names.label }}:</label>
+                            {{ formProviders.names }}
+                        </div>
+                        <label for="id_ci">{{ formProviders.ci.label }}:</label>
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-10">
+                                {{ formProviders.identity }}
+                            </div>
+                            <div class="form-group wd-90">
+                                {{ formProviders.ci }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_contact">{{ formProviders.contact.label }}:</label>
+                            {{ formProviders.contact }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_address">{{ formProviders.address.label }}:</label>
+                            {{ formProviders.address }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalDollarPurchase" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" class="formCredit" action="." enctype="multipart/form-data">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <b><i class="fas text-primary fa-clipboard"></i> <i class="fas text-primary fa-check-circle"></i> Registrar Abono<span></span></b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <input name="action" type="hidden" value="addCredit">
+                        <input name="idCredit" type="hidden" value="0">
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-75">
+                                <label for="id_provider">{{ formDollar.provider.label }}:</label>
+                                {{ formDollar.provider }}
+                            </div>
+                            <div class="form-group wd-25 text-right">
+                                <label>Deuda|$$</label>
+                                <input name="debtInput" id="debtInput" class="form-control text-right" placeholder="Deuda"></input>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-50">
+                                <label class="id_quantity">{{ formDollar.quantity.label }}:</label>
+                                {{ formDollar.quantity }}
+                            </div>
+                            <div class="form-group wd-50">
+                                <label for="id_pay_date">{{ formDollar.pay_date.label }}:</label>
+                                {{ formDollar.pay_date }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_description">{{ formDollar.description.label }}:</label>
+                            {{ formDollar.description }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_image">{{ formDollar.image.label }}:</label>
+                            {{ formDollar.image }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

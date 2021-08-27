@@ -1,0 +1,13 @@
+{% extends 'list.html' %} {% load widget_tweaks %} {% load static %} {% load humanize %} {% block head_list %}
+<script src="{% static 'gainMargin/js/list.js' %}"></script>
+<script src="{% static 'js/dolar.js' %}"></script>
+{% endblock %} {% block dolar %} {% endblock %} {% block columns %}
+<tr>
+    <th scope="col" style="width: 10%;">Código</th>
+    <th scope="col" style="width: 45%;">Producto</th>
+    <th scope="col" style="width: 15%;">Precio|Costo</th>
+    <th scope="col" style="width: 15%;">Ganancia</th>
+    <th scope="col" style="width: 15%;">Precio|Venta</th>
+</tr>
+{% endblock %} {% block rows %} {% endblock %} {% block buttons_list %} {% endblock %} {% block javascript %}
+{% endblock %}

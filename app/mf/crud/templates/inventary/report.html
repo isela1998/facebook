@@ -1,0 +1,95 @@
+{% load static %} {% load humanize %}
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+    .img-invoice {
+        width: 120px;
+    }
+
+    @page {
+        size: letter landscape;
+        margin: 2cm;
+    }
+    
+    #invoice thead tr th {
+        text-align: left;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+        padding-top: 4px;
+    }
+    
+    #invoice thead tr {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    #invoice tbody tr {
+        padding: 0;
+    }
+    
+    .text-center {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <table id="tb">
+        <thead>
+            <tr>
+                <th style="width: 18%; text-align: left;"><img src="..{{ icon }}" class="img-invoice"></th>
+                <th style="width: 82%; text-align: left;">
+                    <div>
+                        <span style="font-size: 18px;">{{ comp.name|upper }}</span><br>
+                        <span style="font-size: 14px; font-weight: 300;"><b>R.I.F.:</b> {{ comp.rif }}</span><br>
+                        <span style="font-size: 14px; font-weight: 300;"><b>Domicilio Fiscal</b>:
+                            {{ comp.address }}</span><br><br>
+                        <span style="font-size: 13px; font-weight: 600;"><b>Zona Postal: </b> </span>
+                        <span style="font-size: 13px; font-weight: 300;"> {{ comp.postal_zone }} </span>
+                        <span style="font-size: 13px; font-weight: 600;"><b>Teléfono:</b> </span>
+                        <span style="font-size: 13px; font-weight: 300;"> {{ comp.phone }} </span><br>
+                        <span style="font-size: 13px; font-weight: 600;"> Correo: </span>
+                        <span style="font-size: 13px; font-weight: 300;">
+                            {{ comp.email }}</span><br>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+    </table><br>
+    <span style="font-size: 14px; font-weight: 300;">REPORTE DE INVENTARIO ({{ comp.today }})</span>
+    <table id="invoice" style="width:auto;">
+        <thead>
+            <tr>
+                <th style="width: 15%; font-size: 13px;">CÓDIGO</th>
+                <th style="width: 10%; font-size: 13px;">CATEG.</th>
+                <th style="width: 10%; font-size: 13px;">TIPO</th>
+                <th style="width: 25%; font-size: 13px;">PRODUCTO</th>
+                <th style="width: 30%; font-size: 13px;">DESCRIPCIÓN</th>
+                <th style="width: 5%; font-size: 13px; text-align: center;">INV.</th>
+                <th style="width: 5%; font-size: 13px; text-align: right;">$$.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in data %}
+            <tr {% if forloop.first %}style="padding-top: 3px;" {% endif %}>
+                <td style="font-size: 13px;">{{ d.code }}</td>
+                <td style="font-size: 13px;">{{ d.category.name }}</td>
+                <td style="font-size: 13px;">{{ d.type_product.name }}</td>
+                <td style="font-size: 13px;">{{ d.brand }} {{ d.product }}</td>
+                <td style="font-size: 13px;">{{ d.description }}</td>
+                <td style="font-size: 13px; text-align: center;">{{ d.quantity }}</td>
+                <td style="font-size: 13px; text-align: right;">{{ d.price_dl|intcomma }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table style="margin-top: 350%;">
+        <thead>
+            <tr>
+                <th style="font-size: 12px; text-align: left; border-style: double; border: gray; padding: 3px;">
+                    <span style="font-size: 14px;">Observaciones: <br><br><br><br><br><br></span>
+                </th>
+            </tr>
+        </thead>
+    </table><br><br><br><br><br>
+</html>

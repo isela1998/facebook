@@ -1,0 +1,314 @@
+{% extends 'layout.html' %} {% load static %} {% load humanize %} {% block head %}
+<script src="{% static 'lib/highcharts-8.2.0/highcharts.js' %}"></script>
+<script src="{% static 'lib/highcharts-8.2.0/modules/exporting.js' %}"></script>
+<script src="{% static 'lib/highcharts-8.2.0/modules/export-data.js' %}"></script>
+<script src="{% static 'lib/highcharts-8.2.0/modules/accessibility.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}" />
+<link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}" />
+<script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/sweetalert2/sweetalert2@10.js' %}"></script>
+<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+<!-- <script src="https://s3.amazonaws.com/dolartoday/data.json"></script> -->
+
+<script src="{% static 'js/dashboard/functions.js' %}"></script>
+<script src="{% static 'js/functions.js' %}"></script>
+{% endblock %} {% block wrapper %} {% endblock %} {% block content %}
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid"></div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <div class="small-box box-shadow">
+                    <div class="inner">
+                        <h3>HOY</h3>
+                        <p>{{ today }}</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion">
+                            <ion-icon src="{% static 'lib/ionicons/svg/calendar.svg' %}"></ion-icon>
+                        </i>
+                    </div>
+                    <a href="{% url 'crud:calendar' %}" class="small-box-footer">Revisar calendario <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box box-shadow">
+                    <div class="inner">
+                        <h3>DOLAR</h3>
+                        <p>Última vez: {{ dl.dolar1|intcomma }}0 </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion">
+                            <ion-icon src="{% static 'lib/ionicons/svg/logo-usd.svg' %}"></ion-icon>
+                        </i>
+                    </div>
+                    <a href="#" class="small-box-footer upDolar">Actualizar tasa <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box box-shadow">
+                    <div class="inner">
+                        <h3>VENTAS</h3>
+
+                        <p>Ventas del día: <b id="sales_today"></b></p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion">
+                            <ion-icon src="{% static 'lib/ionicons/svg/bar-chart.svg' %}"></ion-icon>
+                        </i>
+                    </div>
+                    <a href="{% url 'crud:summary_list' %}" class="small-box-footer">Resumen del día <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box box-shadow">
+                    <div class="inner">
+                        <h3>INVENTARIO</h3>
+
+                        <p>Poca existencia: <b id="few_products"></b></p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion">
+                            <ion-icon src="{% static 'lib/ionicons/svg/receipt.svg' %}"></ion-icon>
+                        </i>
+                    </div>
+                    <a href="{% url 'crud:few_products' %}" class="small-box-footer">Ver detalle <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="card">
+                    <div class="card-header card-header-graph ui-sortable-handle" style="cursor: move;">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-pie mr-1"></i> MES ACTUAL ({{ month }})
+                        </h3>
+                    </div>
+                    <div class="card-body card-body-graph">
+                        <div id="container-pie" class="box-shadow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-header card-header-graph ui-sortable-handle" style="cursor: move;">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-pie mr-1"></i> AÑO ACTUAL ({{ year }})
+                        </h3>
+                    </div>
+                    <div class="card-body card-body-graph">
+                        <div id="container" class="box-shadow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="container-fluid">
+        <div class="col-lg-12">
+            <div class="card card-default">
+                <div class="card-header" style="background-color: #b9d2ea;">
+                    <h3 class="card-title">
+                        <i class="fas fa-bullhorn"></i>
+                        <b>PRODUCTOS SOLICITADOS</b>
+                    </h3>
+                </div>
+                <div class="card-body card-body-requested">
+                    <table class="table" data-page-length='7' id="data">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" class="text-center">...</th>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Quitar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% block rows %}
+
+                            {% endblock %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+<!-- Modal UpDolar -->
+<div class="modal fade show modalDolar" id="modal-sm" tabindex="-1" aria-modal="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <form class="dolar_form" method="POST" action=".">
+                <input type="hidden" name="action" value="upDolar">
+                <div class="modal-header">
+                    <h4 class="modal-title"> <b>Actualizar tasa (<i class="fas fa-dollar-sign"></i>)<span></span></b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <small>Los precios en Bolivares serán actualizados</small>
+                            <small><b>Ultima actualización: {{ dl.dolar1|intcomma }}0</b></small>
+                            <hr>
+                            <input type="text" autocomplete="off" class="form-control inputNumberFormat" name="dolar" id="dolar" placeholder="Ingrese tasa general ($)" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"> </i> Actualizar todo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    var graphcolumn = Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        lang: {
+            viewFullscreen: "Ver en pantalla completa",
+            printChart: "Imprimir gráfica",
+            downloadPNG: "Descargar Imagen PNG",
+            downloadJPEG: "Descargar Imagen JPEG",
+            downloadPDF: "Descargar Documento PDF",
+            downloadSVG: "Descargar Vector SVG",
+            downloadCSV: "Descarga CSV",
+            downloadXLS: "Descarga XLS",
+            viewData: "Ver datos del Análisis",
+            hideData: "Ocultar datos del Análisis",
+            thousandsSep: ","
+        },
+        title: {
+            text: 'Ventas del año Actual'
+        },
+        subtitle: {
+            text: 'Análisis gráfico de ventas'
+        },
+        xAxis: {
+            title: {
+                text: 'Mes'
+            },
+            categories: [
+                'Enero',
+                'Febrero',
+                'Marzo',
+                'Abril',
+                'Mayo',
+                'Junio',
+                'Julio',
+                'Agosto',
+                'Septiembre',
+                'Octubre',
+                'Noviembre',
+                'Diciembre'
+            ],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Ventas'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:,.2f} </b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+    });
+
+    var graphpie = Highcharts.chart('container-pie', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        lang: {
+            viewFullscreen: "Ver en pantalla completa",
+            printChart: "Imprimir gráfica",
+            downloadPNG: "Descargar Imagen PNG",
+            downloadJPEG: "Descargar Imagen JPEG",
+            downloadPDF: "Descargar Documento PDF",
+            downloadSVG: "Descargar Vector SVG",
+            downloadCSV: "Descarga CSV",
+            downloadXLS: "Descarga XLS",
+            viewData: "Ver datos del Análisis",
+            hideData: "Ocultar datos del Análisis"
+        },
+        title: {
+            text: 'Análisis gráfico de ventas'
+        },
+        subtitle: {
+            text: 'Ventas del mes actual'
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Ventas'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+    });
+
+    $('.dolar_form').on('submit', function(e) {
+        e.preventDefault();
+        up_dolar();
+    });
+
+    $('.upDolar').on('click', function() {
+        $('.modalDolar').modal('show');
+    });
+
+    $('#form-control-sede').on('change', function() {
+        var select = document.getElementById('form-control-sede');
+        var sede = this.options[select.selectedIndex];
+        localStorage.setItem('sede', sede.value);
+
+        window.location.reload();
+    });
+</script>
+
+{% endblock %}

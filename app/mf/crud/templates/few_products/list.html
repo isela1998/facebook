@@ -1,0 +1,32 @@
+{% extends 'list.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block head_list %}
+<script src="{% static 'few_products/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+<tr>
+    <th scope="col" style="width: 20%;">Categ.</th>
+    <th scope="col" style="width: 50%;">Producto</th>
+    <th scope="col" style="width: 20%;">Tipo</th>
+    <th scope="col" style="width: 10%;">Existencia</th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{% block buttons_list %}
+<a href="{% url 'crud:almacen_list' %}" class="btn btn-primary btn-flat btnTest">
+    <i class="fas fa-city"></i> Ir a Stock 1
+</a>
+<a href="{% url 'crud:product_list' %}" class="btn btn-primary btn-flat btnTest">
+    <i class="fas fa-boxes"></i> Ir a Stock 2
+</a>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

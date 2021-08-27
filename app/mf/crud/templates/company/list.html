@@ -1,0 +1,65 @@
+{% extends 'list.html' %} {% load widget_tweaks %} {% load static %} {% block head_list %}
+<script src="{% static 'company/js/list.js' %}"></script>
+
+{% endblock %} {% block columns %}
+<tr>
+    <th scope="col" style="width: 20%;">RIF</th>
+    <th scope="col" style="width: 30%;">Dirección</th>
+    <th scope="col" style="width: 10%;">Zona|Postal</th>
+    <th scope="col" style="width: 15%;">Telefono</th>
+    <th scope="col" style="width: 20%;">Correo</th>
+    <th scope="col" style="width: 5%;">Editar</th>
+</tr>
+{% endblock %} {% block rows %} {% endblock %} {% block buttons_list %} {% endblock %} {% block javascript %}
+<!-- Modal -->
+<div class="modal fade" id="modalCompany" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" action="." enctype="multipart/form-data">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <b><i id="i_modal_title" class="fas fa-splus"></i><i class="fas text-primary fa-city"></i> <span>EDITAR INFORMACIÓN</span></b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <input name="action" type="hidden" value="add">
+                        <input name="id" id="id" type="hidden" value="0">
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-70">
+                                <label>{{ form.rif.label }}:</label> 
+                                {{ form.rif }} 
+                            </div>
+                            <div class="form-group wd-30">
+                                <label>{{ form.postal_zone.label }}:</label> 
+                                {{ form.postal_zone }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ form.address.label }}:</label> 
+                            {{ form.address }} 
+                        </div>
+                        <div class="d-flex flex-row flex-nowrap">
+                            <div class="form-group wd-40">
+                                <label>{{ form.phone.label }}:</label> 
+                                {{ form.phone }} 
+                            </div>
+                            <div class="form-group wd-60">
+                                <label>{{ form.email.label }}:</label> 
+                                {{ form.email }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-sync"></i>
+                        Actualizar Información</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

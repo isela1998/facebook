@@ -1,0 +1,188 @@
+{% extends 'list.html' %} {% load static %} {% block head_list %}
+<script src="{% static 'salesSummary/js/list.js' %}"></script>
+{% endblock %} {% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="div-btn-date">
+            <input id="btn-date" class="btn btn-date text-dark larger" type="date" value="{{ today }}">
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="sticky-top mb-3">
+                    <div class="card text-dark collapsed-card" style="background-color: #d1e0eb;">
+                        <div class="card-header border-0 text-dark" style="background-color: #0278ae;">
+                            <h3 class="card-title larger ">
+                                <i class="fas fa-boxes mr-1"></i> TIPOS DE VENTAS
+                            </h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table" id="data">
+                                <thead>
+                                    <tr>
+                                        <th class="larger" scope="col">Tipo</th>
+                                        <th class="larger" scope="col">Cantidad</th>
+                                        <th class="larger" scope="col">Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="sticky-top mb-3">
+                    <div class="card text-dark collapsed-card" style="background-color: #d1e0eb;">
+                        <div class="card-header border-0 text-dark" style="background-color: #0278ae;">
+                            <h3 class="card-title larger ">
+                                <i class="fas fa-percentage mr-1"></i> VENTAS CON DESCUENTO
+                            </h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table" id="data3">
+                                <thead>
+                                    <tr>
+                                        <th class="larger" scope="col">Tipo</th>
+                                        <th class="larger" scope="col">Cantidad</th>
+                                        <th class="larger" scope="col">Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card text-dark" style="background-color: #d1e0eb;">
+                    <div class="card-header border-0 text-dark" style="background-color: #0278ae;">
+                        <h3 class="card-title larger ">
+                            <i class="fas fa-money-check-alt mr-1"></i> RESUMEN POR MÉTODOS DE PAGO
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table" id="data2">
+                            <thead>
+                                <tr>
+                                    <th class="larger" scope="col">Método de pago</th>
+                                    <th class="larger" scope="col">Cantidad</th>
+                                    <th class="larger" scope="col">Totales</th>
+                                    <th class="larger" scope="col">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card text-dark collapsed-card" style="background-color: #d1e0eb;">
+                    <div class="card-header border-0 text-dark" style="background-color: #0278ae;">
+                        <h3 class="card-title larger ">
+                            <i class="fas fa-funnel-dollar mr-1"></i> RESUMEN DE GANANCIAS
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table" id="data6">
+                            <thead>
+                                <tr>
+                                    <th class="larger" scope="col">Producto</th>
+                                    <th class="larger" scope="col">Cantidad</th>
+                                    <th class="larger" scope="col">Totales|$</th>
+                                    <th class="larger" scope="col">Ganancias|$</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                  <td><b>TOTALES</b></td>
+                                  <td id="tdQuantity"></td>
+                                  <td id="tdTotalDl"></td>
+                                  <td id="tdTotalGains"></td>
+                                </tr>
+                              </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} {% block javascript %}
+<div class="modal" id="modalDetails" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">DETALLES DE LA VENTA</h5>
+            </div>
+            <div class="modal-body">
+                <table class="table w-100" id="details" class="display nowrap" style="width:100%">
+                    <thead style="width:100%">
+                        <tr>
+                            <th class="th_type_sales" style="width: 5%;" scope="col"><i class="fas fa-search"></i></th>
+                            <th class="th_type_sales" style="width: 15%;" scope="col">Fecha</th>
+                            <th class="th_type_sales" style="width: 25%;" scope="col">Cliente</th>
+                            <th class="th_type_sales" style="width: 10%;" scope="col">Total|Bs.</th>
+                            <th class="th_type_sales" style="width: 5%;" scope="col">Total|$$.</th>
+                            <th class="th_type_sales" style="width: 15%;" scope="col">Método|Nº1</th>
+                            <th class="th_type_sales" style="width: 15%;" scope="col">Método|Nº2</th>
+                            <th class="th_type_sales" style="width: 10%;" scope="col">Método|Nº3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modalDetailsSaleReturn" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">DETALLES DE LA VENTA</h5>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid text-center" id="detailsVent"></div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        let day = document.getElementById('btn-date');
+        localStorage.setItem('day', day.value);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,308 @@
+{% load static %} {% load humanize %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <div class="sidebar">
+        <div class="text-center img-logo-mf">
+            <a href="{% url 'crud:dashboard' %}">
+                <!-- <img src="{{ request.user.get_image }}" alt="Multiservicios Fernández CA" class="img-fluid"> -->
+                <img id="img-sidebar-collapsed" src="{% static 'img/sasha.png' %}" alt="Importaciones Sasha, CA" class="img-fluid">
+                <img id="img-sidebar" src="{% static 'img/mf.png' %}" alt="Importaciones Sasha, CA" class="img-fluid img-hide">
+            </a>
+        </div>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header">
+                    <h6>IMPORTACIONES <b>SASHA, CA</b></h6>
+                </li>
+                <hr class="hr_division">
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header"><b>Página Principal</b></li>
+                <li class="nav-item" data-title="INICIO">
+                    <a href="{% url 'crud:dashboard' %}" class="nav-link">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p class="p-nav">
+                            INICIO
+                        </p>
+                    </a>
+                </li>
+                <hr class="hr_division">
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header"><b>Gestiones del Día</b></li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:summary_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p class="p-nav">
+                            Resumen de Ventas
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:services_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-cubes"></i>
+                        <p class="p-nav">
+                            Servicios
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:bankTransfers' %}" class="nav-link">
+                        <i class="nav-icon fas fa-clipboard-check"></i>
+                        <p class="p-nav">
+                            Pagos Recibidos
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:dollarHistory' %}" class="nav-link">
+                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                        <p class="p-nav">
+                            Historial del Dólar
+                        </p>
+                    </a>
+                </li>
+                <hr class="hr_division">
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header"><b>Ventas</b></li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:client' %}" class="nav-link">
+                        <i class="nav-icon fas fa-user-tag"></i>
+                        <p class="p-nav">
+                            Clientes
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:sale_create' %}" class="nav-link">
+                        <i class="nav-icon fas fa-cart-arrow-down"></i>
+                        <p class="p-nav">
+                            Facturación
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:sale_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-shopping-bag"></i>
+                        <p class="p-nav">
+                            Historial de Ventas
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:budgets' %}" class="nav-link">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p class="p-nav">
+                            Presupuestos
+                        </p>
+                    </a>
+                </li>
+                <hr class="hr_division">
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header"><b>Productos</b></li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:almacen_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-warehouse"></i>
+                        <p class="p-nav">
+                            Productos (Stock1)
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:product_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-boxes"></i>
+                        <p class="p-nav">
+                            Productos (Stock2)
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:invoices' %}" class="nav-link">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <p class="p-nav">
+                            Facturas|Compras
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:gain_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-comments-dollar"></i>
+                        <p class="p-nav">
+                            Margen de Ganancias
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:requested_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-scroll"></i>
+                        <p class="p-nav">
+                            Productos Solicitados
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:few_products' %}" class="nav-link">
+                        <i class="nav-icon fas fa-sort-amount-down"></i>
+                        <p class="p-nav">
+                            Poco Inventario
+                        </p>
+                    </a>
+                </li>
+                <hr class="hr_division">
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header"><b>Cuentas</b></li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:debts' %}" class="nav-link">
+                        <i class="nav-icon fas fa-book-reader"></i>
+                        <p class="p-nav">
+                            Cobrar/Pagar
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:shopping_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-store"></i>
+                        <p class="p-nav">
+                            Compras
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:expenses_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-money-check-alt"></i>
+                        <p class="p-nav">
+                            Gastos
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:earnings_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-comments-dollar"></i>
+                        <p class="p-nav">
+                            Ganancias
+                        </p>
+                    </a>
+                </li>
+                <hr class="hr_division">
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header"><b>Compromisos</b></li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:providers' %}" class="nav-link">
+                        <i class="nav-icon fas fa-user-tie"></i>
+                        <p class="p-nav">
+                            Proveedores
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:facilitators' %}" class="nav-link">
+                        <i class="nav-icon fas fa-user-tie"></i>
+                        <p class="p-nav">
+                            Facilitadores
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:cancelledInvoices' %}" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-check"></i>
+                        <p class="p-nav">
+                            Facturas Canceladas
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:payments' %}" class="nav-link">
+                        <i class="nav-icon fas fa-file-download"></i>
+                        <p class="p-nav">
+                            Abonos de Cuentas
+                        </p>
+                    </a>
+                </li>
+                <hr class="hr_division">
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header"><b>Calendario</b></li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:calendar' %}" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-alt"></i>
+                        <p class="p-nav">
+                            Permisos/Eventos
+                        </p>
+                    </a>
+                </li>
+                <hr class="hr_division">
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header"><b>Tablas</b></li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:category_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-pallet"></i>
+                        <p class="p-nav">
+                            Categorías
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:type_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-shapes"></i>
+                        <p class="p-nav">
+                            Tipos de productos
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:type_services_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-shapes"></i>
+                        <p class="p-nav">
+                            Tipos de servicios
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:method_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-money-check-alt"></i>
+                        <p class="p-nav">
+                            Métodos de Pago
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:bankAccounts' %}" class="nav-link">
+                        <i class="nav-icon fas fa-university"></i>
+                        <p class="p-nav">
+                            Cuentas Bancarias
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:company' %}" class="nav-link">
+                        <i class="nav-icon fas fa-city"></i>
+                        <p class="p-nav">
+                            Datos de la Empresa
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'user:users_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-users-cog"></i>
+                        <p class="p-nav">
+                            Config. Usuarios
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'crud:historyOperations' %}" class="nav-link">
+                        <i class="nav-icon fas fa-users-cog"></i>
+                        <p class="p-nav">
+                            Historial de Operaciones
+                        </p>
+                    </a>
+                </li>
+                <hr class="hr_division">
+            </ul>
+        </nav>
+    </div>
+</aside>
