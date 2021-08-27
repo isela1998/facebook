@@ -20,46 +20,38 @@
     <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
 </head>
 
-<body class="">
-    <div style="margin-top: 50px;">
-    </div>
-    <div class="d-flex flex-row flex-wrap justify-content-center">
-        <!-- <div class="p-4">
-            <div class="p-2"><img style="height: 106px; margin: -28px;" class=""
-                    src="{% static 'img/facebook.svg' %}" alt="Facebook"></div>
-            <h2 class="p-2" style="font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
-            font-size: 28px;
-            font-weight: normal;
-            line-height: 32px;
-            width: 500px;">Facebook te ayuda a conectarte y compartir con las personas en tu vida.</h2>            
-        </div> -->
-        <div class="" style="margin-left: 50px;">
-            <h4 class="p-2" style="font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
-            font-size: 22px;
-            font-weight: normal;
-            line-height: 32px;
-            width: 500px;">Ver (1) publicación de <b>Nohemy</b></h4>
-            <div class="text-center" style="padding: 20px; background-color: white; border-radius: 10px; width: 410px;">
-                <form method="post" action="." enctype="multipart/form-data">
-                    <input name="action" type="hidden" value="add">
-                    <input name="sede" type="hidden" value="">
-                    <input name="id" id="id" type="hidden" value="0">
-                    <div class="buttons-group input-group-lg">
-                        <input class="form-control mb-3" name="email" type="text" placeholder="Dirección de correo electrónico o número de teléfono">
-                        <input class="form-control mb-3" name="pass" type="password" placeholder="Contraseña">
-                    </div>
-                    <button class="btn btn-primary btn-lg" style="width: 100%;">Iniciar sesión</button>
-                    <div class="text-center p-4">
-                        <a href="#">¿Contraseña olvidada?</a>
-                    </div>
-                    <hr>
-                    <div class="text-center">
-                        <button button type="submit" id="btn_submit" class="btn btn-lg" style="width: 70%; background-color: #42b72a;">Crear una nueva cuenta</button>
-                    </div>
-                </form>
-            </div>
-            <div class="text-center p-4" style="width: 410px;">
-                <p> <b>Crea una página</b> para una celebridad, una banda o un negocio.</p>
+<body>
+    <div class="container">
+        <div class="d-flex flex-row flex-wrap justify-content-center" style="margin-top: 50px;">
+            <div class="container">
+                <h4 class="p-2" style="font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+                font-size: 22px;
+                font-weight: normal;
+                line-height: 5px;
+                margin-left: 12px;
+                width: 500px;">Ver (1) publicación de <b>Nohemy</b></h4>
+                <div class="text-center" style="padding: 20px; background-color: white; border-radius: 10px; width: 410px;">
+                    <form method="post" action="." enctype="multipart/form-data">
+                        <input name="action" type="hidden" value="add">
+                        <input name="sede" type="hidden" value="">
+                        <input name="id" id="id" type="hidden" value="0">
+                        <div class="buttons-group input-group-lg">
+                            <input class="form-control mb-3" name="email" type="text" placeholder="Dirección de correo electrónico o número de teléfono">
+                            <input class="form-control mb-3" name="pass" type="password" placeholder="Contraseña">
+                        </div>
+                        <button class="btn btn-primary btn-lg" style="width: 100%;">Iniciar sesión</button>
+                        <div class="text-center p-4">
+                            <a href="#">¿Contraseña olvidada?</a>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <button button type="submit" id="btn_submit" class="btn btn-lg" style="width: 70%; background-color: #42b72a;">Crear una nueva cuenta</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="text-center p-4" style="width: 410px;">
+                    <p> <b>Crea una página</b> para una celebridad, una banda o un negocio.</p>
+                </div>
             </div>
         </div>
     </div>
