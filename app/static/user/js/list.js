@@ -38,8 +38,9 @@ function getData() {
                 targets: [-2],
                 class: 'text-center',
                 orderable: false,
-                render: function (data, type, row) {
-                    return '<img src="' + data + '" class="img-fluid mx-auto d-block" style="width: 30px; height: 30px;">';
+                render: function(data, type, row) {
+                    let username = '<span class="badge text-dark fill-available badge-info">'+data+'</span>';
+                    return username;
                 }
             },
             {
