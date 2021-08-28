@@ -31,7 +31,6 @@ function getData() {
         columns: [
             { "data": "first_name" },
             { "data": "last_name" },
-            { "data": "id" },
         ],
         columnDefs: [
             {
@@ -41,16 +40,6 @@ function getData() {
                 render: function(data, type, row) {
                     let username = '<span class="badge text-dark fill-available badge-info">'+data+'</span>';
                     return username;
-                }
-            },
-            {
-                targets: [-1],
-                class: 'text-center',
-                orderable: false,
-                render: function (data, type, row) {
-                    let buttons = '<a href="#" rel="edit" data-title="Editar" class="btn btn-warning btn-smp btn-flat"><i class="fas text-dark fa-edit"></i></a> ';
-                    buttons += '<a href="#" rel="delete" data-title="Eliminar" type="button" class="btn btn-danger btn-smp btn-flat"><i class="fas text-dark fa-trash-alt"></i></a>';
-                    return buttons;
                 }
             },
         ]

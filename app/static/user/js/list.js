@@ -31,18 +31,8 @@ function getData() {
         columns: [
             { "data": "first_name" },
             { "data": "last_name" },
-            { "data": "id" },
         ],
         columnDefs: [
-            {
-                targets: [-2],
-                class: 'text-center',
-                orderable: false,
-                render: function(data, type, row) {
-                    let username = '<span class="badge text-dark fill-available badge-info">'+data+'</span>';
-                    return username;
-                }
-            },
             {
                 targets: [-1],
                 class: 'text-center',
