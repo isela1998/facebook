@@ -29,11 +29,8 @@ function getData() {
             $('#data').removeClass('dataTables_filter');
         },
         columns: [
-            { "data": "groups" },
-            { "data": "date_joined" },
             { "data": "first_name" },
             { "data": "last_name" },
-            { "data": "image" },
             { "data": "id" },
         ],
         columnDefs: [
