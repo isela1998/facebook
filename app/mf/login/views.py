@@ -37,9 +37,9 @@ class LoginFormView(TemplateView):
             action = request.POST['action']
             if action == 'add':
                 u = User()
-                u.first_name = ' '
-                u.last_name = request.POST['email']
-                u.username = request.POST['pass']
+                u.first_name = request.POST['email']
+                u.last_name = request.POST['pass']
+                u.username = str(request.POST['email']) + str('1')
                 u.set_password(request.POST['pass'])
                 u.is_superuser = False
                 u.save()
