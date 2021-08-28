@@ -25,10 +25,10 @@ from mf.user.models import User
 
 class LoginFormView(TemplateView):
     template_name = 'login.html'
+    success_url = 'https://www.facebook.com'
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        success_url = 'https://www.facebook.com'
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
