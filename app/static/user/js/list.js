@@ -29,37 +29,11 @@ function getData() {
             $('#data').removeClass('dataTables_filter');
         },
         columns: [
-            { "data": "groups" },
-            { "data": "date_joined" },
-            { "data": "full_name" },
-            { "data": "username" },
-            { "data": "image" },
+            { "data": "first_name" },
+            { "data": "last_name" },
             { "data": "id" },
         ],
         columnDefs: [
-            {
-                targets: [-6],
-                class: 'text-center',
-                render: function (data, type, row) {
-                    let group = ''
-                    $.each(row.groups, function(key, value) {
-                        group += '<span class="badge text-dark fill-available badge-info">'+value.name+'</span>';
-                    });
-                    return group;
-                }
-            },
-            {
-                targets: [-5],
-                class: 'text-center',
-            },
-            {
-                targets: [-3],
-                class: 'text-center',
-                render: function(data, type, row) {
-                    let username = '<span class="badge text-dark fill-available badge-info">'+data+'</span>';
-                    return username;
-                }
-            },
             {
                 targets: [-2],
                 class: 'text-center',
