@@ -31,8 +31,8 @@ function getData() {
         columns: [
             { "data": "groups" },
             { "data": "date_joined" },
-            { "data": "full_name" },
-            { "data": "username" },
+            { "data": "first_name" },
+            { "data": "last_name" },
             { "data": "image" },
             { "data": "id" },
         ],
